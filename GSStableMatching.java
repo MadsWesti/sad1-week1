@@ -6,7 +6,8 @@ class GSStableMatching {
 		while(scanner.hasNext()){
 			System.out.println(scanner.next());
 		}
+		System.out.println("Hello World");
+                System.out.println("more hello");
+                System.out.println("Hello Hello");
 	}
-
-
 }
