@@ -21,26 +21,28 @@ public class GSStableMatching {
 					}
 					else if(token.endsWith(":")) {
 						int id = Integer.parseInt(token.substring(0, token.length()-1));
-						Person p = (id%2 == 0) ? women.get(id/2-1)  : men.get((id+1)/2-1);
+						Person p = (id%2 == 0) ? women.get((id-1)/2)  : men.get((id-1)/2);
 						String priorities = sc.nextLine(); 
 						for (int i = 0; i < priorities.length(); i++) {
 							char c = priorities.charAt(i);
 							if (c != ' ') {
 								int partnerId = Character.getNumericValue(c);
-								p.addPriority(partnerId);
+								System.out.println((partnerId-1)/2);
+								p.addPriority((partnerId-1)/2);
 							}
 						}
 					}
 					else{
 						if (personCount < 2*N){ 
 							int id = Integer.parseInt(token);
+
 							if (id%2 == 0) {
-								Woman w = new Woman(id/2-1, sc.next());
+								Woman w = new Woman((id-1)/2, sc.next(),N);
 								women.add(w);
 								if (debug == true) System.out.println(w.id +" "+ w.name);
 							}
 							else{
-								Man m = new Man((id+1)/2-1, sc.next());
+								Man m = new Man((id-1)/2, sc.next());
 								men.add(m);
 								if (debug == true) System.out.println(m.id +" "+ m.name);
 							}
@@ -73,7 +75,7 @@ public class GSStableMatching {
 			}
 			else{
 				Man husband = (Man) currentWoman.marriedTo;
-				if(currentWoman.prioritiesById.get(currentMan.id) < currentWoman.prioritiesById.get(husband.id)){
+				if(currentWoman.prioritiesById[currentMan.id] < currentWoman.prioritiesById[husband.id]){
 					if(debug) System.out.println(currentWoman.name+" switches partner");
 					men.add(husband);
 					currentMan.marriedTo = currentWoman;
@@ -95,20 +97,21 @@ public class GSStableMatching {
 			super(id,name);
 		}
 		public void addPriority(int id) {
-			priorities.add(id/2-1);
+			priorities.add(id);
 		}
 		public int getNextPrority(){
 			return priorities.poll();
 		}
 	}
 	private static class Woman extends Person{
-		public HashMap<Integer, Integer> prioritiesById = new HashMap<Integer, Integer>();
-		public Woman(int id,  String name){
+		public int[] prioritiesById;
+		public Woman(int id,  String name, int N){
 			super(id, name);
+			prioritiesById = new int[N];
 		}
 		public void addPriority(int id) {
-			int priority = prioritiesById.size() + 1;
-			prioritiesById.put((id+1)/2-1, priority);
+			int priority = prioritiesById.length;
+			prioritiesById[id] = priority;
 		}
 	}
 	private static class Person {
