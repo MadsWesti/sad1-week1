@@ -1,5 +1,6 @@
 import java.util.*;
 public class GSStableMatching {
+	// To run with N=5000 - run with increased heap size: java -Xmx2g GSStableMatching "filename"
 	static public void main(String[] args) {
 		int N=0;
 		ArrayList<Woman> women = new ArrayList<Woman>();
